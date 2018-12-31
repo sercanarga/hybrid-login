@@ -8,8 +8,8 @@ $config = [
         'enabled' => true,
         'callback' => '',
         'keys' => [
-            'key'  => 'srFixTitKV8f9WmJwF6VehhSF',
-            'secret' => 'GqSR29NQ0RoDBQ8gywQrsLV3vXowgFsSIMmueVQPm7E4ALAkNH'
+            'key'  => '',
+            'secret' => ''
         ]
     ],
 ];
