@@ -1,25 +1,10 @@
 <?php
-
-class oauth {
-    function __construct($c) {
-        if (@isset($c['twitter'])) {
-            if (@$c['twitter']['enabled'] == 1) {
-                if(@$c['twitter']['keys']['key'] != null && @$c['twitter']['keys']['secret'] != null) {
-                    new twitter_oauth($c['twitter']['keys']['key'], $c['twitter']['keys']['secret']);
-                } else {
-                    throw new Exception('Twitter API bilgileri eksik!');
-                }
-            }
-        }
-    }
-}
-
 class twitter_oauth {
     private $config = [
         'request_token' => 'https://twitter.com/oauth/request_token',
         'access_token' => 'https://api.twitter.com/oauth/access_token',
     ];
-    public $token_url = NULL;
+    static $token_url = NULL;
 
     function __construct($k, $s) {
         if (!isset($_GET['oauth_token']) && !isset($_GET['oauth_verifier'])) {
@@ -64,9 +49,12 @@ class twitter_oauth {
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $c_header);
             parse_str(curl_exec($ch), $result);
-            $this->token_url = 'https://api.twitter.com/oauth/authenticate?oauth_token='.$result["oauth_token"];
-            echo '<a href="'.$this->token_url.'">'.$this->token_url.'</a>';
             curl_close($ch);
+            if (@isset($result['oauth_token'])) {
+                twitter_oauth::$token_url = 'https://api.twitter.com/oauth/authenticate?oauth_token='.$result["oauth_token"];
+            } else {
+                throw new Exception(print_r($result, true));
+            }
         } else {
             $oauth_hash = [
                 'oauth_consumer_key' => $k,
@@ -130,6 +118,7 @@ class twitter_login {
         'api_url' => 'https://api.twitter.com/1.1/',
         'verify_credentials' => 'account/verify_credentials.json',
     ];
+    static $user_info = NULL;
 
     function __construct($k, $s, $u_k, $u_s) {
         $oauth_hash = [
@@ -182,10 +171,13 @@ class twitter_login {
         curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
         $result = json_decode(curl_exec($c));
-        echo '<pre>';
-        print_r($result);
-        echo '</pre>';
+        if (@isset($result->id)) {
+            twitter_login::$user_info = $result;
+        } else {
+            throw new Exception(print_r($result, true));
+        }
         curl_close($c);
     }
 }
+
 ?>
