@@ -14,6 +14,8 @@ class oauth {
                     throw new Exception('Twitter API bilgileri eksik!');
                 }
             }
+        }
+        if (@isset($c['instagram'])) {
             if(@$c['instagram']['enabled'] == 1) {
                 if (@$c['instagram']['keys']['client_id'] != null && @$c['instagram']['keys']['client_secret'] != null) {
                     new instagram_oauth(
