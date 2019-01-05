@@ -21,6 +21,8 @@ class oauth {
                         $c['instagram']['keys']['client_secret'],
                         @$c['instagram']['callback_url']
                     );
+                } else {
+                    throw new Exception('Instagram API bilgileri eksik!');
                 }
             }
         }
