@@ -6,10 +6,10 @@ class twitter_oauth {
     ];
     static $token_url = NULL;
 
-    function __construct($k, $s) {
-        if (!isset($_GET['oauth_token']) && !isset($_GET['oauth_verifier'])) {
+    function __construct($k, $s, $c) {
+        if (!isset($_GET['oauth_token']) || !isset($_GET['oauth_verifier'])) {
             $oauth_hash = [
-                // 'oauth_callback' => 'http://localhost/twitter/index.php?step3',
+                'oauth_callback' => $c,
                 'oauth_consumer_key' => $k,
                 'oauth_nonce' => time(),
                 'oauth_timestamp' => time(),

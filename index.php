@@ -2,16 +2,25 @@
 
 include("oauth.php");
 include("./modules/twitter_module.php");
+include("./modules/instagram_module.php");
 
 $config = [
     'twitter'   => [
         'enabled' => true,
-        'callback' => '',
+        'callback_url' => '',
         'keys' => [
-            'key'  => '',
-            'secret' => ''
+            'consumer_key'  => '',
+            'consumer_key_secret' => ''
         ]
     ],
+    'instagram' => [
+        'enabled' => true,
+        'callback_url' => '',
+        'keys' => [
+            'client_id' => '',
+            'client_secret' => '',
+        ]
+    ]
 ];
 
 try {
