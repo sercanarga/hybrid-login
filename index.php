@@ -6,7 +6,7 @@ include("./modules/instagram_module.php");
 
 $config = [
     'twitter'   => [
-        'enabled' => true,
+        'enabled' => false,
         'callback_url' => '',
         'keys' => [
             'consumer_key'  => '',
@@ -14,7 +14,7 @@ $config = [
         ]
     ],
     'instagram' => [
-        'enabled' => true,
+        'enabled' => false,
         'callback_url' => '',
         'keys' => [
             'client_id' => '',
@@ -26,8 +26,12 @@ $config = [
 try {
     $oauth = new oauth($config);
     echo '<a href="'.twitter_oauth::$token_url.'">'.twitter_oauth::$token_url.'</a>';
+    echo '<br>';
+    echo '<a href="'.instagram_login::$token_url.'">'.instagram_login::$token_url.'</a>';
+
     echo '<pre>';
     print_r(twitter_login::$user_info);
+    print_r(instagram_login::$user_info);
     echo '</pre>';
 } catch (\Exception $e) {
     echo '<pre>';

@@ -40,20 +40,18 @@ class twitter_oauth {
                         return sprintf('%s=%s', $k, $v);
                     }, $oauth_hash, array_keys($oauth_hash)
                 ));
-            $ch = curl_init();
-            $c_header[] = 'Authorization: OAuth '.$param_header;
-            curl_setopt($ch, CURLOPT_URL, $this->config['request_token']);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $c_header);
-            parse_str(curl_exec($ch), $result);
-            curl_close($ch);
-            if (@isset($result['oauth_token'])) {
-                twitter_oauth::$token_url = 'https://api.twitter.com/oauth/authenticate?oauth_token='.$result["oauth_token"];
+
+            $curl_options = [
+                CURLOPT_URL => $this->config['request_token'],
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_POST => true,
+                CURLOPT_HTTPHEADER => ['Authorization: OAuth ' . $param_header]
+            ];
+            $token = @oauth::_curl($curl_options)['exec']['oauth_token'];
+            if ($token != NULL) {
+                twitter_oauth::$token_url = 'https://api.twitter.com/oauth/authenticate?oauth_token='.$token;
             } else {
-                throw new Exception(print_r($result, true));
+                throw new Exception(print_r(oauth::_curl($curl_options, 'json')['exec'], true));
             }
         } else {
             $oauth_hash = [
@@ -94,20 +92,28 @@ class twitter_oauth {
 
             $post_field = "oauth_verifier={$_GET['oauth_verifier']}";
 
-            $ch = curl_init();
-            $c_header[] = 'Authorization: OAuth '.$param_header;
-            $c_header[] = 'Content-Length: '. strlen($post_field);
-            $c_header[] = 'Content-Type: application/x-www-form-urlencoded';
+            $c_header = [
+                'Authorization:OAuth' => $param_header,
+                'Content-Length:' => strlen($post_field),
+                'Content-Type:' => 'application/x-www-form-urlencoded'
+            ];
 
-            curl_setopt($ch, CURLOPT_URL, $this->config['access_token']);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_field);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $c_header);
-            parse_str(curl_exec($ch), $result);
-            curl_close($ch);
+            $c_header =
+            implode(',', array_map(
+                function ($v, $k) {
+                    return sprintf('%s %s', $k, $v);
+                }, $c_header, array_keys($c_header)
+            ));
+
+            $curl_options = [
+                CURLOPT_URL => $this->config['access_token'],
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_POST => true,
+                CURLOPT_POSTFIELDS => $post_field,
+                CURLOPT_HTTPHEADER => [$c_header]
+            ];
+            $result = oauth::_curl($curl_options)['exec'];
+
             new twitter_login($k, $s, @$result['oauth_token'], @$result['oauth_token_secret']);
         }
     }
@@ -162,21 +168,22 @@ class twitter_login {
                         $oauth_header,
                         array_keys($oauth_header)
                     ));
-
-        $c = curl_init();
         $c_header = array("Authorization: Oauth {$oauth_header}", 'Expect:');
-        curl_setopt($c, CURLOPT_HTTPHEADER, $c_header);
-        curl_setopt($c, CURLOPT_HEADER, false);
-        curl_setopt($c, CURLOPT_URL, $this->config['api_url'].$this->config['verify_credentials']);
-        curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
-        $result = json_decode(curl_exec($c));
-        if (@isset($result->id)) {
+
+        $curl_options = [
+            CURLOPT_URL => $this->config['api_url'].$this->config['verify_credentials'],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_HTTPHEADER => $c_header,
+            CURLOPT_HEADER => false
+        ];
+        $result = oauth::_curl($curl_options, 'json')['exec'];
+
+        if (@isset($result['id'])) {
             twitter_login::$user_info = $result;
         } else {
             throw new Exception(print_r($result, true));
         }
-        curl_close($c);
     }
 }
 
