@@ -1,2 +1,12 @@
-# Hybrid Social Login System
-Is under development. Description to be added.
+# PHP Hibrit Giriş Sistemi
+Geliştirme aşamasındadır. Geliştirme tamamlandığında dökümantasyon ve composer eklenecektir.
+
+## Eklenmesi planlanan modüller:
+(üstü çizili olanlar dahil olan modüllerdir)
++ ~~Twitter~~	
++ ~~Instagram~~
++ Facebook
++ ~~GitHub~~
++ Steam
++ LinkedIn
++ Google
