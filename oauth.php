@@ -44,6 +44,19 @@ class oauth {
                 }
             }
         }
+        if (@isset($c['github'])) {
+            if(@$c['github']['enabled'] == 1) {
+                if (@$c['github']['keys']['client_id'] != null && @$c['github']['keys']['client_secret'] != null && @$c['instagram']['callback_url'] != null) {
+                    new github_login(
+                        $c['github']['keys']['client_id'],
+                        $c['github']['keys']['client_secret'],
+                        $c['github']['callback_url']
+                    );
+                } else {
+                    throw new Exception('GitHub API bilgileri eksik!');
+                }
+            }
+        }
     }
 }
 

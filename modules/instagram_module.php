@@ -8,7 +8,7 @@ class instagram_login {
     static $token_url = NULL, $user_info = NULL;
 
     function __construct($k, $s, $c) {
-        if (isset($_GET['code'])) {
+        if (isset($_GET['code']) && !isset($_GET['state'])) {
             $post_field = [
                 'client_id' => $k,
                 'redirect_uri' => $c,

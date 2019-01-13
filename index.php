@@ -3,10 +3,11 @@
 include("oauth.php");
 include("./modules/twitter_module.php");
 include("./modules/instagram_module.php");
+include("./modules/github_module.php");
 
 $config = [
     'twitter'   => [
-        'enabled' => false,
+        'enabled' => true,
         'callback_url' => '',
         'keys' => [
             'consumer_key'  => '',
@@ -14,7 +15,15 @@ $config = [
         ]
     ],
     'instagram' => [
-        'enabled' => false,
+        'enabled' => true,
+        'callback_url' => '',
+        'keys' => [
+            'client_id' => '',
+            'client_secret' => '',
+        ]
+    ],
+    'github' => [
+        'enabled' => true,
         'callback_url' => '',
         'keys' => [
             'client_id' => '',
@@ -28,10 +37,13 @@ try {
     echo '<a href="'.twitter_oauth::$token_url.'">'.twitter_oauth::$token_url.'</a>';
     echo '<br>';
     echo '<a href="'.instagram_login::$token_url.'">'.instagram_login::$token_url.'</a>';
+    echo '<br>';
+    echo '<a href="'.github_login::$token_url.'">'.github_login::$token_url.'</a>';
 
     echo '<pre>';
     print_r(twitter_login::$user_info);
     print_r(instagram_login::$user_info);
+    print_r(github_login::$user_info);
     echo '</pre>';
 } catch (\Exception $e) {
     echo '<pre>';
