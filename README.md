@@ -9,4 +9,4 @@ Geliştirme aşamasındadır. Geliştirme tamamlandığında dökümantasyon ve 
 + ~~GitHub~~
 + Steam
 + LinkedIn
-+ Google
++ ~~Google~~
