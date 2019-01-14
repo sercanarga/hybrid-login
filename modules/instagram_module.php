@@ -5,10 +5,10 @@ class instagram_login {
         'access_token' => 'https://api.instagram.com/oauth/access_token',
         'authorize' => 'https://api.instagram.com/oauth/authorize/?',
     ];
-    static $token_url = NULL, $user_info = NULL;
+    static $token_url, $user_info;
 
     function __construct($k, $s, $c) {
-        if (isset($_GET['code']) && !isset($_GET['state'])) {
+        if (isset($_GET['code']) && !isset($_GET['state']) && !isset($_GET['scope'])) {
             $post_field = [
                 'client_id' => $k,
                 'redirect_uri' => $c,

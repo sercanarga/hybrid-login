@@ -44,11 +44,8 @@ $config = [
 try {
     $oauth = new oauth($config);
     echo '<a href="'.twitter_oauth::$token_url.'">'.twitter_oauth::$token_url.'</a>';
-    echo '<br>';
     echo '<a href="'.instagram_login::$token_url.'">'.instagram_login::$token_url.'</a>';
-    echo '<br>';
     echo '<a href="'.github_login::$token_url.'">'.github_login::$token_url.'</a>';
-    echo '<br>';
     echo '<a href="'.google_login::$token_url.'">'.google_login::$token_url.'</a>';
 
     echo '<pre>';

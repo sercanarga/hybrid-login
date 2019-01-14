@@ -6,7 +6,7 @@ class google_login {
         'user_info' => 'https://www.googleapis.com/plus/v1/people/me',
         'oauth_url' => 'https://accounts.google.com/o/oauth2/v2/auth?'
     ];
-    static $token_url = NULL, $user_info = NULL;
+    static $token_url, $user_info;
 
     function __construct($k, $s, $c) {
         if (isset($_GET['code']) && isset($_GET['scope'])) {

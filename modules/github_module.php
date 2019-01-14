@@ -4,7 +4,7 @@ class github_login {
         'access_token' => 'https://github.com/login/oauth/access_token',
         'authorize' => 'https://github.com/login/oauth/authorize?',
     ];
-    static $token_url = NULL, $user_info = NULL;
+    static $token_url, $user_info;
 
     function random($length = 10) {
         return substr(str_shuffle(str_repeat(

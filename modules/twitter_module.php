@@ -4,7 +4,7 @@ class twitter_oauth {
         'request_token' => 'https://twitter.com/oauth/request_token',
         'access_token' => 'https://api.twitter.com/oauth/access_token',
     ];
-    static $token_url = NULL;
+    static $token_url;
 
     function __construct($k, $s, $c) {
         if (!isset($_GET['oauth_token']) || !isset($_GET['oauth_verifier'])) {
