@@ -57,6 +57,19 @@ class oauth {
                 }
             }
         }
+        if (@isset($c['google'])) {
+            if(@$c['google']['enabled'] == 1) {
+                if (@$c['google']['keys']['client_id'] != null && @$c['google']['keys']['client_secret'] != null && @$c['google']['callback_url'] != null) {
+                    new google_login(
+                        $c['google']['keys']['client_id'],
+                        $c['google']['keys']['client_secret'],
+                        $c['google']['callback_url']
+                    );
+                } else {
+                    throw new Exception('Google API bilgileri eksik!');
+                }
+            }
+        }
     }
 }
 

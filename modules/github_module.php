@@ -24,13 +24,12 @@ class github_login {
 
             $curl_options = [
                 CURLOPT_URL => $this->config['access_token'],
-                CURLOPT_RETURNTRANSFER => 1,
-                CURLOPT_POST => 1,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_POST => true,
                 CURLOPT_POSTFIELDS => $post_field
             ];
 
             $result = oauth::_curl($curl_options)['exec'];
-
             if (@isset($result['access_token'])) {
                 github_login::user_info($result);
             } else {
@@ -54,11 +53,10 @@ class github_login {
         $result = 'https://api.github.com/user?'.http_build_query($code);
         $curl_options = [
             CURLOPT_URL => $result,
-            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_RETURNTRANSFER => true,
             CURLOPT_USERAGENT => $_SERVER['HTTP_USER_AGENT']
         ];
-        $result = oauth::_curl($curl_options, 'json')['exec'];
-        github_login::$user_info = $result;
+        github_login::$user_info = oauth::_curl($curl_options, 'json')['exec'];
     }
 }
 

@@ -20,8 +20,8 @@ class instagram_login {
 
             $curl_options = [
                 CURLOPT_URL => $this->config['access_token'],
-                CURLOPT_RETURNTRANSFER => 1,
-                CURLOPT_POST => 1,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_POST => true,
                 CURLOPT_POSTFIELDS => $post_field
             ];
             $result = oauth::_curl($curl_options, 'json')['exec'];
